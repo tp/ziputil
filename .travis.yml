@@ -4,6 +4,12 @@ go:
   - 1.3
   - tip
 
-install: date
+
+# we're in $HOME/gopath/src/github.com/tp/ziputil
+install:
+  - cd ../../../
+  - pwd
+  - mkdir -r timm.io
+  - mv github.com/tp/ziputil timm.io/
 
 script: go test -v ./...
