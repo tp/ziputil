@@ -4,4 +4,6 @@ go:
   - 1.3
   - tip
 
+install: date
+
 script: go test -v ./...
