@@ -13,6 +13,7 @@ install:
   - mkdir timm.io
   - mv github.com/tp/ziputil timm.io/
   - cd timm.io/ziputil
+  - go get golang.org/x/tools/cmd/vet
   - go get github.com/golang/lint/golint
 
 script:
