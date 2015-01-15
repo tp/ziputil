@@ -8,11 +8,16 @@ import (
 
 func TestReadTopLevelFile(t *testing.T) {
 	zipFile, err := os.Open("testFiles/625ab.zip")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer zipFile.Close()
 
 	aReader, err := FileFromZipReader(zipFile, "625a.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
+	aReader.Close()
 
 	buf := make([]byte, 625)
 
@@ -43,15 +48,20 @@ func TestReadTopLevelFile(t *testing.T) {
 
 func TestReadNestedFile(t *testing.T) {
 	zipFile, err := os.Open("testFiles/625ab_nested.zip")
-
-	aReader, err := FileFromZipReader(zipFile, "nested/625b.txt")
 	if err != nil {
 		t.Fatal(err)
 	}
+	defer zipFile.Close()
+
+	nestedBReader, err := FileFromZipReader(zipFile, "nested/625b.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer nestedBReader.Close()
 
 	buf := make([]byte, 625)
 
-	n, err := aReader.Read(buf)
+	n, err := nestedBReader.Read(buf)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -66,7 +76,7 @@ func TestReadNestedFile(t *testing.T) {
 		}
 	}
 
-	n, err = aReader.Read(buf)
+	n, err = nestedBReader.Read(buf)
 	if err != io.EOF {
 		t.Log("expected no more content")
 		t.Fatal(err)
